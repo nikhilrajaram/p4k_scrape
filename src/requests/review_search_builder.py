@@ -19,14 +19,14 @@ class ReviewSearchBuilder:
         self.query_to_string = None
 
     def add_types_query(self, types):
-        if self.query_types_string != ReviewSearchBuilder.ROOT_HIERARCHY:
+        if self.query_types_string != ReviewSearchBuilder.ROOT_TYPES:
             self.query_types_string += ','
 
         self.query_types_string += urllib.parse.quote_plus('/'.join(types))
         return self
 
     def add_hierarchy_query(self, hierarchy):
-        if self.query_hierarchy_string != ReviewSearchBuilder.ROOT_TYPES:
+        if self.query_hierarchy_string != ReviewSearchBuilder.ROOT_HIERARCHY:
             self.query_hierarchy_string += ','
 
         self.query_hierarchy_string += urllib.parse.quote_plus('/'.join(hierarchy))
