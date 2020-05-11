@@ -1,4 +1,11 @@
-class Review:
+from src.model.Model import Model
+from src.model.review.artist import Artist
+from src.model.review.author import Author
+from src.model.review.genre import Genre
+from src.model.review.tombstone import Tombstone
+
+
+class Review(Model):
     def __init__(self, artists=[], authors=[], channel="", content_type="", dek="", genres=[], id=None,
                  modified_at=None, position=None, private_tags=[], promo_description="", promo_title="",
                  pub_date=None, seo_description="", seo_title="", social_description="", social_title="",
@@ -26,3 +33,18 @@ class Review:
         self.title = title
         self.tombstone = tombstone
         self.url = url
+
+    @classmethod
+    def from_json(cls, json):
+        if json is None:
+            return Review()
+
+        artists = [Artist.from_json(artist) for artist in json.get('artists')]
+        authors = [Author.from_json(author) for author in json.get('authors')]
+        genres = [Genre.from_json(genre) for genre in json.get('genres')]
+        return Review(artists, authors, json.get('channel'), json.get('contentType'), json.get('dek'), genres,
+                      json.get('id'), json.get('modifiedAt'), json.get('position'), json.get('privateTags'),
+                      json.get('promoDescription'), json.get('promoTitle'), json.get('pubDate'),
+                      json.get('seoDescription'), json.get('seoTitle'), json.get('socialDescription'),
+                      json.get('socialTitle'), json.get('subChannel'), json.get('tags'), json.get('timestamp'),
+                      json.get('title'), Tombstone.from_json(json.get('tombstone')), json.get('url'))
