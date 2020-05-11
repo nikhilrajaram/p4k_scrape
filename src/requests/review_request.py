@@ -8,11 +8,11 @@ class ReviewRequest:
         self.url = url
         self.r = None
         self.json = None
-        self.review = None
+        self.review_responses = None
 
     def execute(self):
         if self.r is not None:
-            return self.review
+            return self.review_responses
 
         return self.serialize(requests.get(self.url))
 
@@ -21,8 +21,8 @@ class ReviewRequest:
         self.json = r.json()
 
         try:
-            self.review = ReviewResponse.from_json(self.json)
+            self.review_responses = ReviewResponse.from_json(self.json)
         except ValueError as ex:
             print(ex)
 
-        return self.review
+        return self.review_responses
