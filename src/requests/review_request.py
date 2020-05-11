@@ -4,25 +4,35 @@ from src.model.review.review_response import ReviewResponse
 
 
 class ReviewRequest:
-    def __init__(self, url):
-        self.url = url
-        self.r = None
-        self.json = None
-        self.review_responses = None
+    DEFAULT_REQUEST_LEN = 23
+
+    def __init__(self, rsb, request_len=DEFAULT_REQUEST_LEN):
+        rsb.add_size_query(request_len)
+        self.rsb = rsb
+        self.request_len = request_len
+        self.review_resp = None
+
+    @staticmethod
+    def _serialize(r):
+        return ReviewResponse.from_json(r.json())
+
+    @staticmethod
+    def _execute(url):
+        print(url)
+        return ReviewRequest._serialize(requests.get(url))
 
     def execute(self):
-        if self.r is not None:
-            return self.review_responses
+        page = 0
+        url = self.rsb.copy().add_start_query(0).build()
+        self.review_resp = self._execute(url)
+        count = self.review_resp.count
+        n = len(self.review_resp.results.reviews)
 
-        return self.serialize(requests.get(self.url))
+        while n < count:
+            page += 1
+            url = self.rsb.copy().add_start_query(page*self.request_len).build()
+            temp_resp = self._execute(url)
+            self.review_resp.results.reviews.extend(temp_resp.results.reviews)
+            n += len(temp_resp.results.reviews)
 
-    def serialize(self, r):
-        self.r = r
-        self.json = r.json()
-
-        try:
-            self.review_responses = ReviewResponse.from_json(self.json)
-        except ValueError as ex:
-            print(ex)
-
-        return self.review_responses
+        return self.review_resp
