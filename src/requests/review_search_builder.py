@@ -61,6 +61,18 @@ class ReviewSearchBuilder:
 
         self.query_string += query
 
+    def copy(self):
+        new_rsb = ReviewSearchBuilder()
+        new_rsb.query_string = ReviewSearchBuilder.ROOT_QUERY
+        new_rsb.query_types_string = self.query_types_string
+        new_rsb.query_hierarchy_string = self.query_hierarchy_string
+        new_rsb.query_sort_string = self.query_sort_string
+        new_rsb.query_size_string = self.query_size_string
+        new_rsb.query_start_string = self.query_start_string
+        new_rsb.query_from_string = self.query_from_string
+        new_rsb.query_to_string = self.query_to_string
+        return new_rsb
+
     def build(self):
         if self.query_types_string != ReviewSearchBuilder.ROOT_TYPES:
             self.add_query(self.query_types_string)
@@ -83,4 +95,6 @@ class ReviewSearchBuilder:
         if self.query_to_string is not None:
             self.add_query(self.query_to_string)
 
-        return ReviewSearchBuilder.SEARCH_ENDPOINT + self.query_string
+        url = ReviewSearchBuilder.SEARCH_ENDPOINT + self.query_string
+        self.query_string = ReviewSearchBuilder.ROOT_QUERY
+        return url
