@@ -7,6 +7,7 @@ class ReviewSearchBuilder:
     ROOT_HIERARCHY = "hierarchy="
     ROOT_TYPES = "types="
     ROOT_SORT = "sort="
+    COMMA_URLENCODED = "%2C"
 
     def __init__(self):
         self.query_string = ReviewSearchBuilder.ROOT_QUERY
@@ -20,21 +21,21 @@ class ReviewSearchBuilder:
 
     def add_types_query(self, types):
         if self.query_types_string != ReviewSearchBuilder.ROOT_TYPES:
-            self.query_types_string += ','
+            self.query_types_string += ReviewSearchBuilder.COMMA_URLENCODED
 
         self.query_types_string += urllib.parse.quote_plus('/'.join(types))
         return self
 
     def add_hierarchy_query(self, hierarchy):
         if self.query_hierarchy_string != ReviewSearchBuilder.ROOT_HIERARCHY:
-            self.query_hierarchy_string += ','
+            self.query_hierarchy_string += ReviewSearchBuilder.COMMA_URLENCODED
 
         self.query_hierarchy_string += urllib.parse.quote_plus('/'.join(hierarchy))
         return self
 
     def add_sort_query(self, sort_field, sort_direction):
         if self.query_sort_string != ReviewSearchBuilder.ROOT_SORT:
-            self.query_sort_string += ','
+            self.query_sort_string += ReviewSearchBuilder.COMMA_URLENCODED
 
         self.query_sort_string += urllib.parse.quote_plus("{} {}".format(sort_field, sort_direction))
         return self
