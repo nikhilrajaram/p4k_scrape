@@ -23,14 +23,14 @@ class ReviewSearchBuilder:
         if self.query_types_string != ReviewSearchBuilder.ROOT_TYPES:
             self.query_types_string += ReviewSearchBuilder.COMMA_URLENCODED
 
-        self.query_types_string += urllib.parse.quote('/'.join(types))
+        self.query_types_string += urllib.parse.quote_plus('/'.join(types))
         return self
 
     def add_hierarchy_query(self, hierarchy):
         if self.query_hierarchy_string != ReviewSearchBuilder.ROOT_HIERARCHY:
             self.query_hierarchy_string += ReviewSearchBuilder.COMMA_URLENCODED
 
-        self.query_hierarchy_string += urllib.parse.quote('/'.join(hierarchy))
+        self.query_hierarchy_string += urllib.parse.quote_plus('/'.join(hierarchy))
         return self
 
     def add_sort_query(self, sort_field, sort_direction):
