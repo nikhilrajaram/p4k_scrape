@@ -39,9 +39,21 @@ class Review(Model):
         if json is None:
             return Review()
 
-        artists = [Artist.from_json(artist) for artist in json.get('artists')]
-        authors = [Author.from_json(author) for author in json.get('authors')]
-        genres = [Genre.from_json(genre) for genre in json.get('genres')]
+        try:
+            artists = [Artist.from_json(artist) for artist in json.get('artists')]
+        except TypeError:
+            artists = []
+
+        try:
+            authors = [Author.from_json(author) for author in json.get('authors')]
+        except TypeError:
+            authors = []
+
+        try:
+            genres = [Genre.from_json(genre) for genre in json.get('genres')]
+        except TypeError:
+            genres = []
+
         return Review(artists, authors, json.get('channel'), json.get('contentType'), json.get('dek'), genres,
                       json.get('id'), json.get('modifiedAt'), json.get('position'), json.get('privateTags'),
                       json.get('promoDescription'), json.get('promoTitle'), json.get('pubDate'),

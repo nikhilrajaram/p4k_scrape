@@ -1,5 +1,6 @@
 import requests
 
+from src.error.paginated_request_error import PaginatedRequestError
 from src.model.review.review_response import ReviewResponse
 
 
@@ -18,7 +19,10 @@ class ReviewRequest:
 
     @staticmethod
     def _execute(url):
-        print(url)
+        r = requests.get(url)
+        if r.status_code != 200:
+            raise PaginatedRequestError(url, "status code: {}".format(r.status_code))
+
         return ReviewRequest._serialize(requests.get(url))
 
     def execute(self):
