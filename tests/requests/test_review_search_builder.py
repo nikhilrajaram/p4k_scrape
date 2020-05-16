@@ -1,7 +1,7 @@
 import pytest
 import urllib
 
-from src.requests.review_search_builder import ReviewSearchBuilder
+from src.request.review_search_builder import ReviewSearchBuilder
 
 
 class TestReviewSearchBuilder:
