@@ -8,9 +8,18 @@ from src.model.review.review_response import ReviewResponse
 
 
 class ReviewRequest:
+    """
+    Serialize a (potentially) paginated response from Pitchfork's API
+    Query specified by a ReviewSearchURLBuilder instance
+    """
     DEFAULT_REQUEST_LEN = 200
 
     def __init__(self, rsb, request_len=DEFAULT_REQUEST_LEN):
+        """
+        Initialize ReviewRequest
+        :param rsb: ReviewSearchURLBuilder which specifies query
+        :param request_len: size parameter of requests
+        """
         rsb.add_size_query(request_len)
         self.rsb = rsb
         self.request_len = request_len
@@ -19,9 +28,18 @@ class ReviewRequest:
         self._async_session = None
 
     async def _async_session_init(self):
+        """
+        Instantiate asynchronous connection pool
+        :return: None
+        """
         self._async_session = aiohttp.ClientSession()
 
     def _execute_sync(self, url):
+        """
+        Execute a synchronous request to the Pitchfork API
+        :param url: url to request
+        :return: json-like response body as a dict
+        """
         r = self._sync_session.get(url)
         if r.status_code != 200:
             raise PaginatedRequestError(url, "status code: {}".format(r.status_code))
@@ -29,6 +47,11 @@ class ReviewRequest:
         return r.json()
 
     async def _execute_async(self, url):
+        """
+        Create a coroutine for a single request to the Pitchfork API
+        :param url: url to request
+        :return: request coroutine
+        """
         async with self._async_session.get(url) as r:
             if r.status != 200:
                 raise PaginatedRequestError(url, "status code: {}".format(r.status))
@@ -36,12 +59,23 @@ class ReviewRequest:
             return await r.json()
 
     async def _batch_execute_async(self, urls):
+        """
+        Asynchronously perform requests to Pitchfork API to list of urls
+        :param urls: list of urls to request
+        :return: list of responses
+        """
         tasks = [self._execute_async(url) for url in urls]
         resps = await asyncio.gather(self._async_session_init(), *tasks, return_exceptions=False)
         await self._async_session.close()
         return resps
 
     def execute(self):
+        """
+        Execute request specified by input ReviewSearchURLBuilder
+        If request is paginated, make requests asynchronously
+        Serialize response and return
+        :return: Serialized response
+        """
         page = 0
         self.review_resp = ReviewResponse.from_json(self._execute_sync(self.rsb.copy().add_start_query(0).build()))
         urls = []
