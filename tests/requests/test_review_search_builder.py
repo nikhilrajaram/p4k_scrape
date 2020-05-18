@@ -148,15 +148,6 @@ class TestReviewSearchBuilder:
         TestReviewSearchBuilder.assert_base(parsed)
         assert parsed.query == 'from={}'.format(date2)
 
-    def test_add_multiple_start_query(self):
-        rsb = ReviewSearchBuilder()\
-            .add_start_query(1)\
-            .add_start_query(2)
-        url = rsb.build()
-        parsed = urllib.parse.urlparse(url)
-        TestReviewSearchBuilder.assert_base(parsed)
-        assert parsed.query == 'start=2'
-
     def test_add_to_query(self):
         date = "2011-01-01"
         rsb = ReviewSearchBuilder()\
