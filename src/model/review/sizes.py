@@ -2,10 +2,10 @@ from src.model.Model import Model
 
 
 class Sizes(Model):
-    def __init__(self, homepage_large="", homepage_small="", list="", standard=""):
+    def __init__(self, homepage_large="", homepage_small="", sizes_list="", standard=""):
         self.homepage_large = homepage_large
         self.homepage_small = homepage_small
-        self.list = list
+        self.list = sizes_list
         self.standard = standard
 
     @classmethod
