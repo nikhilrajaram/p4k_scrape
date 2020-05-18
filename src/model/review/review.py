@@ -6,7 +6,7 @@ from src.model.review.tombstone import Tombstone
 
 
 class Review(Model):
-    def __init__(self, artists=[], authors=[], channel="", content_type="", dek="", genres=[], id=None,
+    def __init__(self, artists=[], authors=[], channel="", content_type="", dek="", genres=[], review_id=None,
                  modified_at=None, position=None, private_tags=[], promo_description="", promo_title="",
                  pub_date=None, seo_description="", seo_title="", social_description="", social_title="",
                  sub_channel="", tags=[], timestamp=None, title="", tombstone=None, url=""):
@@ -16,7 +16,7 @@ class Review(Model):
         self.content_type = content_type
         self.dek = dek
         self.genres = genres
-        self.id = id
+        self.id = review_id
         self.modified_at = modified_at
         self.position = position
         self.private_tags = private_tags
