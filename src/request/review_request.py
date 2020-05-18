@@ -8,7 +8,7 @@ from src.model.review.review_response import ReviewResponse
 
 
 class ReviewRequest:
-    DEFAULT_REQUEST_LEN = 23
+    DEFAULT_REQUEST_LEN = 200
 
     def __init__(self, rsb, request_len=DEFAULT_REQUEST_LEN):
         rsb.add_size_query(request_len)
