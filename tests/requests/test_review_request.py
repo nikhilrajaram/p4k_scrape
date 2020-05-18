@@ -3,7 +3,7 @@ import datetime
 
 from src.error.paginated_request_error import PaginatedRequestError
 from src.request.review_request import ReviewRequest
-from src.request.review_search_builder import ReviewSearchURLBuilder
+from src.request.review_search_url_builder import ReviewSearchURLBuilder
 
 
 class TestReviewRequest:
